@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head><meta charset="utf-8"><title>Compose Test</title></head>
+  <body>
+    <h1>Web -> Backend test</h1>
+    <button onclick="callApi()">Call /api</button>
+    <pre id="out">...</pre>
+
+    <script>
+      async function callApi() {
+        const r = await fetch('/api');
+        const t = await r.text();
+        document.getElementById('out').textContent = t;
+      }
+    </script>
+  </body>
+</html>
+
