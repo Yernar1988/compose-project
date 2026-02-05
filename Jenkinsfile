@@ -1,21 +1,22 @@
 pipeline {
-  options { ansiColor("xterm") }
-
   agent any
 
   stages {
-    stage("Sanity check Jenkinsfile") {
+
+    stage('Sanity check Jenkinsfile') {
       steps {
-        sh '\n          set -eu
+        sh '''
+          set -eu
           # Fail fast if someone pasted terminal commands into Jenkinsfile
-          if grep -nE "(^|[^a-zA-Z])(git commit|git push|cat > Jenkinsfile)" Jenkinsfile; then
+          if grep -nE '(^|[^a-zA-Z])(git commit|git push|cat > Jenkinsfile)' Jenkinsfile; then
             echo "ERROR: Jenkinsfile contains pasted terminal commands. Fix it." >&2
             exit 2
           fi
-        '\n      }
+        '''
+      }
     }
 
-stage('Info') {
+    stage('Info') {
       steps {
         sh '''
           echo "=== WHOAMI ==="
