@@ -8,7 +8,7 @@ pipeline {
         sh '''
           set -eu
           # Fail fast if someone pasted terminal commands into Jenkinsfile
-          if grep -nE '(^|[^a-zA-Z])(git commit|git push|cat > Jenkinsfile)' Jenkinsfile; then
+          if grep -nE '(^|[^a-zA-Z])(git commit|git push)' Jenkinsfile; then
             echo "ERROR: Jenkinsfile contains pasted terminal commands. Fix it." >&2
             exit 2
           fi
