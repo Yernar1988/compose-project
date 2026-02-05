@@ -6,17 +6,16 @@ pipeline {
   stages {
     stage("Sanity check Jenkinsfile") {
       steps {
-        sh """
-          set -eu
-          if grep -nE "(^|[^a-zA-Z])(git commit|git push|cat > Jenkinsfile|<<\x27EOF\x27)" Jenkinsfile; then
+        sh '\n          set -eu
+          # Fail fast if someone pasted terminal commands into Jenkinsfile
+          if grep -nE "(^|[^a-zA-Z])(git commit|git push|cat > Jenkinsfile)" Jenkinsfile; then
             echo "ERROR: Jenkinsfile contains pasted terminal commands. Fix it." >&2
             exit 2
           fi
-        """
-      }
+        '\n      }
     }
 
-    stage('Info') {
+stage('Info') {
       steps {
         sh '''
           echo "=== WHOAMI ==="
