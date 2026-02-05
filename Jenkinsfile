@@ -12,7 +12,7 @@ pipeline {
           echo "=== Docker version ==="
           docker --version
           echo "=== Compose version ==="
-          docker compose version
+          docker-compose version
         '''
       }
     }
@@ -22,9 +22,9 @@ pipeline {
         sh '''
           set -euxo pipefail
           cd /work/compose-project
-          docker compose pull || true
-          docker compose up -d --build
-          docker compose ps
+          docker-compose pull || true
+          docker-compose up -d --build
+          docker-compose ps
         '''
       }
     }
