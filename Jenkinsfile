@@ -1,25 +1,32 @@
 pipeline {
-    agent any
+  agent any
 
-    stages {
-
-        stage('Build images') {
-            steps {
-                sh 'docker compose build'
-            }
-        }
-
-        stage('Stop old containers') {
-            steps {
-                sh 'docker compose down'
-            }
-        }
-
-        stage('Start containers') {
-            steps {
-                sh 'docker compose up -d'
-            }
-        }
+  stages {
+    stage('Info') {
+      steps {
+        sh '''
+          echo "=== WHOAMI ==="
+          whoami || true
+          echo "=== PWD ==="
+          pwd
+          echo "=== Docker version ==="
+          docker --version
+          echo "=== Compose version ==="
+          docker compose version
+        '''
+      }
     }
-}
 
+    stage('Deploy (compose-project)') {
+      steps {
+        sh '''
+          set -euxo pipefail
+          cd /work/compose-project
+          docker compose pull || true
+          docker compose up -d --build
+          docker compose ps
+        '''
+      }
+    }
+  }
+}
