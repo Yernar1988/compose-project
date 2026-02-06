@@ -2,11 +2,18 @@ pipeline {
   agent any
 
   stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
     stage('Info') {
       steps {
         sh '''
+          set -eux
           echo "=== WHOAMI ==="
-          whoami || true
+          whoami
           echo "=== PWD ==="
           pwd
           echo "=== Docker version ==="
@@ -17,16 +24,18 @@ pipeline {
       }
     }
 
-   stage('Deploy (compose-project)') {
-  steps {
-    sh '''
-      set -euxo pipefail
-      cd /work/compose-project
+    stage('Deploy (compose-project)') {
+      steps {
+        sh '''
+          set -euxo pipefail
+          cd /work/compose-project
 
-      docker-compose pull
-      docker-compose down --remove-orphans || true
-      docker-compose up -d --build --force-recreate
-      docker-compose ps
-    '''
+          docker-compose pull
+          docker-compose down --remove-orphans || true
+          docker-compose up -d --build --force-recreate
+          docker-compose ps
+        '''
+      }
+    }
   }
 }
